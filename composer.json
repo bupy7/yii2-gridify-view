@@ -1,6 +1,6 @@
 {
     "name": "bupy7/yii2-gridify",
-    "description": "This is widget wrapper of ListView with plugin of https://github.com/hongkhanh/gridify. This widget allows load content automatically via Ajax when you reach the end of the page."
+    "description": "This is widget wrapper of ListView with plugin of https://github.com/hongkhanh/gridify. This widget allows load content automatically via Ajax when you reach the end of the page. Content is displayed in table form."
     "keywords": ["yii2", "extension", "widget", "ListView", "grid", "image"],
     "homepage": "https://github.com/bupy7/yii2-gridify",
     "type": "yii2-extension",
