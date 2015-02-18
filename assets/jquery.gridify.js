@@ -1,3 +1,11 @@
+/**
+ * A lightweight script for creating a Pinterest-like grid using JQuery.
+ * 
+ * @author Nguyen Hong Khanh https://github.com/hongkhanh/gridify
+ * @author Vasilij Belosludcev https://github.com/bupy7/yii2-gridify
+ * @version 1.0
+ */
+
 'use strict';
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
