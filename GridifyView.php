@@ -6,6 +6,8 @@ use yii\helpers\Json;
 use yii\web\View;
 use yii\widgets\ListView;
 use yii\base\InvalidConfigException;
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is widget extended of ListView with plugin of https://github.com/hongkhanh/gridify. This widget allows load 
@@ -22,6 +24,8 @@ class GridifyView extends ListView
      * Pagination options:
      * - url: URL to action for get next page via Ajax. Require.
      * - scrollDistance: Distance from bottom before load next page, default: 250px.
+     * - pageSize: Count of pages for load. By default value from $dataProvider->pagination->pageSize.
+     * - pageParam: Variable for number of page. By default value from $dataProvider->pagination->pageParam.
      * 
      * Grid options:
      * - srcNode: grid items (class, node). Require.
@@ -41,6 +45,11 @@ class GridifyView extends ListView
      */
     public $layout = '{items}';
     
+    /**
+     * @var bool Display only items or with ListView tag wrap.
+     */
+    public $onlyItems = false;
+    
     public function init()
     {
         parent::init();
@@ -55,10 +64,36 @@ class GridifyView extends ListView
         
         $this->pluginOptions['url'] = Url::toRoute($this->pluginOptions['url']);
         $this->pluginOptions['id'] = $this->options['id'];
+        $this->pluginOptions = array_merge([
+            'pageSize' => $this->dataProvider->pagination->pageSize,
+            'pageParam' => $this->dataProvider->pagination->pageParam,
+        ], $this->pluginOptions);          
         $pluginOptions = Json::encode($this->pluginOptions);
         
         $js = "$('#{$this->options['id']}').gridify({$pluginOptions});";
         $this->view->registerJs($js, View::POS_LOAD);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function run()
+    {
+        if ($this->dataProvider->getCount() > 0 || $this->showOnEmpty) {
+            $content = preg_replace_callback("/{\\w+}/", function ($matches) {
+                $content = $this->renderSection($matches[0]);
+
+                return $content === false ? $matches[0] : $content;
+            }, $this->layout);
+        } else {
+            $content = $this->renderEmpty();
+        }
+        if (!$this->onlyItems) {
+            $tag = ArrayHelper::remove($this->options, 'tag', 'div');
+            echo Html::tag($tag, $content, $this->options);
+        } else {
+            echo $content;
+        }
     }
     
     /**

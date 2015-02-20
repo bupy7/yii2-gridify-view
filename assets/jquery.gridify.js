@@ -1,8 +1,8 @@
 /**
- * A lightweight script for creating a Pinterest-like grid using JQuery.
+ * A lightweight script for creating a Pinterest-like grid using JQuery with autoload content via ajax.
  * 
  * @author Nguyen Hong Khanh https://github.com/hongkhanh/gridify
- * @author Vasilij Belosludcev https://github.com/bupy7/yii2-gridify
+ * @author Vasilij Belosludcev https://github.com/bupy7/yii2-gridify-view
  * @version 1.0.0
  */
 'use strict';
@@ -14,6 +14,7 @@
             options         = options || {},
             scrollDistance  = 250,
             processLoad     = false,
+            pageCurrent     = 0,
 
             indexOfSmallest = function(a) {
                 
@@ -70,20 +71,28 @@
             autoload = function() {
                 
                 $(window).on('scroll', function () {
-                    if ($(document).height() - $(window).height() - $(window).scrollTop() < scrollDistance 
-                        && !processLoad
-                    ) {
-                        processLoad = true;         
+
+                    var scrollPos = $(document).height() - $(window).height() - $(window).scrollTop();
+                    if (scrollPos < scrollDistance && !processLoad && pageCurrent != options.pageSize) {
+                        processLoad = true;   
+
+                        var data = new Object;
+                        data[options.pageParam] = ++pageCurrent;
+ 
                         $.ajax({
-                            url: options.url,
-                            type: 'get',
-                            success: function(data) {
+                            url:        options.url,
+                            data:       data,
+                            type:       'get',
+                            success:    function(data) {
+                                
                                 $('#' + options.id).append(data);
                                 render();                              
                                 processLoad = false;
+                                
                             }
                         });
                     }
+                    
                 });
                 
             };
