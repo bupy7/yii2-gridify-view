@@ -24,7 +24,6 @@ class GridifyView extends ListView
      * Pagination options:
      * - url: URL to action for get next page via Ajax. Require.
      * - scrollDistance: Distance from bottom before load next page, default: 250px.
-     * - pageCount: Count of pages for load. By default value from $dataProvider->pagination->pageCount.
      * - pageParam: Variable for number of page. By default value from $dataProvider->pagination->pageParam.
      * 
      * Grid options:
