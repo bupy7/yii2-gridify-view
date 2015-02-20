@@ -73,7 +73,7 @@
                 $(window).on('scroll', function () {
 
                     var scrollPos = $(document).height() - $(window).height() - $(window).scrollTop();
-                    if (scrollPos < scrollDistance && !processLoad && pageCurrent != options.pageSize) {
+                    if (scrollPos < scrollDistance && !processLoad && pageCurrent != options.pageCount - 1) {
                         processLoad = true;   
 
                         var data = new Object;

@@ -24,7 +24,7 @@ class GridifyView extends ListView
      * Pagination options:
      * - url: URL to action for get next page via Ajax. Require.
      * - scrollDistance: Distance from bottom before load next page, default: 250px.
-     * - pageSize: Count of pages for load. By default value from $dataProvider->pagination->pageSize.
+     * - pageCount: Count of pages for load. By default value from $dataProvider->pagination->pageCount.
      * - pageParam: Variable for number of page. By default value from $dataProvider->pagination->pageParam.
      * 
      * Grid options:
@@ -59,19 +59,6 @@ class GridifyView extends ListView
                 throw new InvalidConfigException("The \"{$property}\" property must be set to \"pluginOptions\".");
             }
         }
-        
-        GridifyViewAsset::register($this->view);
-        
-        $this->pluginOptions['url'] = Url::toRoute($this->pluginOptions['url']);
-        $this->pluginOptions['id'] = $this->options['id'];
-        $this->pluginOptions = array_merge([
-            'pageSize' => $this->dataProvider->pagination->pageSize,
-            'pageParam' => $this->dataProvider->pagination->pageParam,
-        ], $this->pluginOptions);          
-        $pluginOptions = Json::encode($this->pluginOptions);
-        
-        $js = "$('#{$this->options['id']}').gridify({$pluginOptions});";
-        $this->view->registerJs($js, View::POS_LOAD);
     }
     
     /**
@@ -85,9 +72,12 @@ class GridifyView extends ListView
 
                 return $content === false ? $matches[0] : $content;
             }, $this->layout);
+            
+            $this->_registerScript();
         } else {
             $content = $this->renderEmpty();
         }
+        
         if (!$this->onlyItems) {
             $tag = ArrayHelper::remove($this->options, 'tag', 'div');
             echo Html::tag($tag, $content, $this->options);
@@ -112,5 +102,26 @@ class GridifyView extends ListView
         }
     }
 
+    /**
+     * Register JS script.
+     */
+    private function _registerScript()
+    {
+        GridifyViewAsset::register($this->view);
+
+        $this->pluginOptions = array_merge($this->pluginOptions, [
+            'url' => Url::toRoute($this->pluginOptions['url']),
+            'id' => $this->options['id'],
+            'pageCount' => $this->dataProvider->pagination->pageCount,
+        ]);
+        $this->pluginOptions = array_merge([
+            'pageParam' => $this->dataProvider->pagination->pageParam,
+        ], $this->pluginOptions);     
+     
+        $pluginOptions = Json::encode($this->pluginOptions);
+        
+        $js = "$('#{$this->options['id']}').gridify({$pluginOptions});";
+        $this->view->registerJs($js, View::POS_LOAD);
+    }
     
 }
