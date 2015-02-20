@@ -15,7 +15,7 @@ class GridifyViewAsset extends AssetBundle
     
     public $sourcePath = '@bupy7/gridifyview/assets';
     public $js = [
-        'jquery.gridfy.js',
+        'jquery.gridify.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

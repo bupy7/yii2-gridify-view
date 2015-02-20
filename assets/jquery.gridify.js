@@ -3,37 +3,14 @@
  * 
  * @author Nguyen Hong Khanh https://github.com/hongkhanh/gridify
  * @author Vasilij Belosludcev https://github.com/bupy7/yii2-gridify
- * @version 1.0
+ * @version 1.0.0
  */
-
 'use strict';
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        define(['jquery'], factory);
-    } else {
-        factory(jQuery);
-    }
-}(function($) {
+(function($) {
     $.fn.extend({
-        imagesLoaded: function(cb) {
-            var images  = $(this).find('img'),
-                count   = images.length;
-            
-            if (count == 0) {
-                cb();
-            }
-            for (var i = 0, length = images.length; i < length; i++) {
-                var image = new Image();
-                image.onload = image.onerror = function() {
-                    if (--count == 0) {
-                        cb();
-                    }
-                };
-                image.src = images[i].src;
-            }
-        },
         gridify: function(options) {
             var $this           = $(this),
+                keys            = [],
                 options         = options || {},
                 indexOfSmallest = function(a) {
                     var lowest = 0;
@@ -67,8 +44,15 @@
                     }
 
                     for(var i = 0, length = items.length; i < length; i++) {
-                        var $item   = $(items[i]), 
-                            idx     = indexOfSmallest(columns);
+                        var $item = $(items[i]);
+                        
+                        if (keys.indexOf($item.closest(options.srcDataKey).data('key')) == -1) {
+                            keys.push($item.closest(options.srcDataKey).data('key'));
+                        } else {
+                            continue;
+                        }
+                        
+                        var idx = indexOfSmallest(columns);
                         
                         $item.css({
                             width:      itemWidth,
@@ -83,13 +67,13 @@
                     
                     $this.css('height', Math.max.apply(null, columns) + itemMargin);
                 };
+                
+            render();
 
-            $this.imagesLoaded(render);
-            
             if (options.resizable) {
                 var resize = $(window).bind("resize", render);
                 $this.on('remove', resize.unbind);
             }
         }
     });
-}));
+});
