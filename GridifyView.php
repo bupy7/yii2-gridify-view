@@ -21,9 +21,7 @@ class GridifyView extends ListView
      * @var array Options of jQuery plugin.
      * Pagination options:
      * - url: URL to action for get next page via Ajax. Require.
-     * - scrollDistance: Distance from top/bottom before showing element (px)
-     * - srcDataKey: Selector to node where content "data-key" attribute. 
-     * It selector must be parent of "srcNode". Require.
+     * - scrollDistance: Distance from bottom before load next page, default: 250px.
      * 
      * Grid options:
      * - srcNode: grid items (class, node). Require.
@@ -47,7 +45,7 @@ class GridifyView extends ListView
     {
         parent::init();
         
-        foreach (['url', 'srcDataKey', 'srcNode'] as $property) {
+        foreach (['url', 'srcNode'] as $property) {
             if ($this->pluginOptions[$property] === null) {
                 throw new InvalidConfigException("The \"{$property}\" property must be set to \"pluginOptions\".");
             }
