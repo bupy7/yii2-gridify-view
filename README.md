@@ -4,7 +4,7 @@ This is widget extended of ListView with plugin of https://github.com/hongkhanh/
 
 # How use
 
-Added your controller folliwing code:
+Added in your controller following code:
 
 ```php
 public function actionIndex()
@@ -25,3 +25,34 @@ public function actionIndex()
     ]);
 }
 ```
+
+Added in your ```index``` view following code:
+
+```php
+$this->render('_page', [
+    'dataProvider' => $dataProvider,
+]);
+```
+
+Added in your ```_page``` view following code:
+
+```php
+use bupy7\gridifyview\GridifyView;
+
+echo GridifyView::widget([
+    'dataProvider' => $dataProvider,
+    'itemView' => '_item',
+    'onlyItems' => isset($onlyItems) ? $onlyItems : false,
+    'pluginOptions' => [
+        'url' => ['/path/to/actin/in/your/controller'],
+        'srcNode' => '> div',
+        'resizable' => true,
+        'width' => '250px',
+        'maxWidth' => '350px',
+        'margin' => '20px',
+    ],
+]);
+```
+
+# License
+
