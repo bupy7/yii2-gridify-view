@@ -14,7 +14,7 @@
             options         = options || {},
             scrollDistance  = 250,
             processLoad     = false,
-            pageCurrent     = 0,
+            pageCurrent     = 1,
 
             indexOfSmallest = function(a) {
                 
@@ -73,7 +73,7 @@
                 $(window).on('scroll', function () {
 
                     var scrollPos = $(document).height() - $(window).height() - $(window).scrollTop();
-                    if (scrollPos < scrollDistance && !processLoad && pageCurrent != options.pageCount - 1) {
+                    if (scrollPos < scrollDistance && !processLoad && pageCurrent != options.pageCount) {
                         processLoad = true;   
 
                         var data = new Object;
