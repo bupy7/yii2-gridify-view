@@ -2,6 +2,21 @@
 
 This is widget extended of ListView with plugin of https://github.com/hongkhanh/gridify. This widget allows load content automatically via Ajax when you reach the end of the page. Content is displayed in table form.
 
+##Installation
+The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+
+Either run
+```
+$ php composer.phar require bupy7/yii2-gridify-view "dev-master"
+```
+
+or add
+```
+"bupy7/yii2-gridify-view": "dev-master"
+```
+
+to the **require** section of your **composer.json** file.
+
 # How use
 
 Added in your controller following code:
@@ -56,3 +71,4 @@ echo GridifyView::widget([
 
 # License
 
+yii2-gridify-view is released under the BSD 3-Clause License.
