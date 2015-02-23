@@ -2,6 +2,8 @@
 
 This is widget extended of ListView with plugin of https://github.com/hongkhanh/gridify. This widget allows load content automatically via Ajax when you reach the end of the page. Content is displayed in table form.
 
+![Screenshot](screenshot.png)
+
 ##Installation
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
