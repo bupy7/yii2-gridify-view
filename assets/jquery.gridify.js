@@ -32,7 +32,7 @@
                 $this.css('position', 'relative');
 
                 var items       = $this.find(options.srcNode),
-                    transition  = (options.transition || 'all 0.5s ease') + ', height 0, width 0',
+                    transition  = transition  = options.transition || 'none',
                     width       = $this.innerWidth(),
                     itemMargin  = parseInt(options.margin || 0),
                     itemWidth   = parseInt(options.maxWidth || options.width || 220),
