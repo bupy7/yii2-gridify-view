@@ -32,7 +32,7 @@
                 $this.css('position', 'relative');
 
                 var items       = $this.find(options.srcNode),
-                    transition  = options.transition || 'none',
+                    transition  = options.transition || 'opacity 0.5s ease-out 0s',
                     width       = $this.innerWidth(),
                     itemMargin  = parseInt(options.margin || 0),
                     itemWidth   = parseInt(options.maxWidth || options.width || 220),
@@ -55,12 +55,16 @@
                         idx     = indexOfSmallest(columns);
 
                     $item.css({
-                        width:      itemWidth,
-                        position:   'absolute',
-                        margin:     itemMargin / 2,
-                        top:        columns[idx] + itemMargin / 2,
-                        left:       (itemWidth + itemMargin) * idx + left,
-                        transition: transition
+                        'width':                itemWidth,
+                        'position':             'absolute',
+                        'margin':               itemMargin / 2,
+                        'top':                  columns[idx] + itemMargin / 2,
+                        'left':                 (itemWidth + itemMargin) * idx + left,
+                        'opacity':              1,
+                        'transition':           transition,
+                        '-webkit-transition':   transition,
+                        '-moz-transition':      transition,
+                        '-o-transition':        transition
                     });
                     columns[idx] += $item.innerHeight() + itemMargin;
                 }

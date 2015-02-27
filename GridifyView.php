@@ -32,7 +32,7 @@ class GridifyView extends ListView
      * - width: grid item width in pixel, default: 220px
      * - maxWidth: dynamic gird item width if specified, (pixel)
      * - resizable: re-layout if window resize
-     * - transition: support transition for CSS3, default: all 0.5s ease 
+     * - transition: support transition for CSS3, default: opacity 0.5s ease-out 0s.
      */
     public $pluginOptions = [];
     
@@ -58,6 +58,7 @@ class GridifyView extends ListView
                 throw new InvalidConfigException("The \"{$property}\" property must be set to \"pluginOptions\".");
             }
         }
+        Html::addCssStyle($this->itemOptions, ['opacity' => 0]);
     }
     
     /**
