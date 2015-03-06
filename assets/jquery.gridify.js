@@ -8,10 +8,14 @@
 'use strict';
 (function($) {
     
-    $.fn.gridify = function(options) {
+    $.fn.gridify = function(o) {
         
         var $this           = $(this),
-            options         = options || {},
+            options         = $.extend({
+                events: {
+                    afterLoad: function() {}
+                }
+            }, o),
             scrollDistance  = 250,
             processLoad     = false,
             pageCurrent     = 1,
@@ -93,6 +97,7 @@
                                 render();                              
                                 processLoad = false;
                                 
+                                options.events.afterLoad.call($this);
                             }
                         });
                     }

@@ -8,6 +8,7 @@ use yii\widgets\ListView;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
+use yii\web\JsExpression;
 
 /**
  * This is widget extended of ListView with plugin of https://github.com/hongkhanh/gridify. This widget allows load 
@@ -33,6 +34,9 @@ class GridifyView extends ListView
      * - maxWidth: dynamic gird item width if specified, (pixel)
      * - resizable: re-layout if window resize
      * - transition: support transition for CSS3, default: opacity 0.5s ease-out 0s.
+     * - events: { - list of events
+     *      afterLoad: calling after successfully load content via Ajax
+     *   }
      */
     public $pluginOptions = [];
     
@@ -118,6 +122,11 @@ class GridifyView extends ListView
             'pageParam' => $this->dataProvider->pagination->pageParam,
         ], $this->pluginOptions);     
      
+        if (!empty($this->pluginOptions['events'])) {
+            foreach (['afterLoad'] as $event) {
+                $this->pluginOptions['events'][$event] = new JsExpression($this->pluginOptions['events'][$event]);
+            }
+        }
         $pluginOptions = Json::encode($this->pluginOptions);
         
         $js = "$('#{$this->options['id']}').gridify({$pluginOptions});";

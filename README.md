@@ -68,6 +68,11 @@ echo GridifyView::widget([
         'maxWidth' => '350px',
         'margin' => '20px',
     ],
+    'events' => [
+        'afterLoad' => 'function(){
+            alert('Successfully!');
+        }',
+    ],
 ]);
 ```
 
