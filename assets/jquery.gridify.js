@@ -18,6 +18,7 @@
             scrollDistance  = 250,
             processLoad     = false,
             pageCurrent     = 1,
+            loader          = null,
 
             indexOfSmallest = function(a) {
                 var lowest = 0;
@@ -70,6 +71,8 @@
                 }
 
                 $this.css('height', Math.max.apply(null, columns) + itemMargin);
+                
+                loader.remove();
             },
             imagesLoading = function(cb) {
                 var images = $this.find('img');
@@ -85,7 +88,7 @@
                             cb();
                             return;
                         }
-                    }
+                    };
                     image.src = images[i].src;
                 }
             },
@@ -124,7 +127,7 @@
                         processLoad = true;   
                         
                         $('body').addClass('loading');
-                        var loader = modalLoader(options.loader);
+                        loader = modalLoader(options.loader);
                         
                         var data = new Object;
                         data[options.pageParam] = ++pageCurrent;
@@ -138,7 +141,6 @@
 
                                 imagesLoading(render);                             
                                 processLoad = false;
-                                loader.remove();
                                 $('body').removeClass('loading');
 
                                 options.events.afterLoad.call($this);
