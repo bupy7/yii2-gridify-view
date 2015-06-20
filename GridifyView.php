@@ -117,7 +117,7 @@ class GridifyView extends ListView
         GridifyViewAsset::register($this->view);
 
         $this->pluginOptions = array_merge($this->pluginOptions, [
-            'url' => Url::toRoute($this->pluginOptions['url']),
+            'url' => Url::to($this->pluginOptions['url']),
             'id' => $this->options['id'],
             'pageCount' => $this->dataProvider->pagination->pageCount,
         ]);
