@@ -37,6 +37,9 @@ class GridifyView extends ListView
      * - events: { - list of events
      *      afterLoad: calling after successfully load content via Ajax
      *   }
+     * 
+     * Loader options:
+     * - loader - Text or valid HTML for indication of loading content. 
      */
     public $pluginOptions = [];
     
@@ -62,7 +65,7 @@ class GridifyView extends ListView
                 throw new InvalidConfigException("The \"{$property}\" property must be set to \"pluginOptions\".");
             }
         }
-        Html::addCssStyle($this->itemOptions, ['opacity' => 0]);
+        Html::addCssStyle($this->itemOptions, ['visibility' => 'hidden']);
     }
     
     /**
@@ -119,6 +122,7 @@ class GridifyView extends ListView
             'pageCount' => $this->dataProvider->pagination->pageCount,
         ]);
         $this->pluginOptions = array_merge([
+            'loader' => 'Loading...',
             'pageParam' => $this->dataProvider->pagination->pageParam,
         ], $this->pluginOptions);     
      

@@ -6,10 +6,9 @@
  * @version 1.0.0
  */
 'use strict';
-(function($) {
-    
+
+(function($) {   
     $.fn.gridify = function(o) {
-        
         var $this           = $(this),
             options         = $.extend({
                 events: {
@@ -21,7 +20,6 @@
             pageCurrent     = 1,
 
             indexOfSmallest = function(a) {
-                
                 var lowest = 0;
                 for (var i = 1, length = a.length; i < length; i++) {
                     if (a[i] < a[lowest]) {
@@ -29,14 +27,12 @@
                     }
                 }
                 return lowest;
-                
             },
             render = function() {
-                
                 $this.css('position', 'relative');
 
                 var items       = $this.find(options.srcNode),
-                    transition  = options.transition || 'opacity 0.5s ease-out 0s',
+                    transition  = options.transition || 'visibility 1s ease-out 0s',
                     width       = $this.innerWidth(),
                     itemMargin  = parseInt(options.margin || 0),
                     itemWidth   = parseInt(options.maxWidth || options.width || 220),
@@ -64,7 +60,7 @@
                         'margin':               itemMargin / 2,
                         'top':                  columns[idx] + itemMargin / 2,
                         'left':                 (itemWidth + itemMargin) * idx + left,
-                        'opacity':              1,
+                        'visibility':           'visible',
                         'transition':           transition,
                         '-webkit-transition':   transition,
                         '-moz-transition':      transition,
@@ -74,46 +70,91 @@
                 }
 
                 $this.css('height', Math.max.apply(null, columns) + itemMargin);
+            },
+            imagesLoading = function(cb) {
+                var images = $this.find('img');
+                var count = images.length;
+                if (count == 0) {
+                    cb();
+                    return;
+                }
+                for (var i = 0; i < count; i++) {
+                    var image = new Image();
+                    image.onload = image.onerror = function(e) {
+                        if (--count == 0) {
+                            cb();
+                            return;
+                        }
+                    }
+                    image.src = images[i].src;
+                }
+            },
+            modalLoader = function(message) {
+                var styles = [
+                        'position: fixed;',
+                        'display: block;',
+                        'z-index: 999999;',
+                        'text-align: center;',
+                        'background: rgba(0, 0, 0, 0.5);',
+                        'font-size: 20px;',
+                        'color: #fff'
+                    ],
+                    template = 
+                        '<div style="' + styles.join(' ') + '">' +
+                            '<div style="display: inline-block; padding: 10px;">' + message + '</div>' +
+                        '</div>',
+                    modalLoading = $(template),
+                    offset = $('body').offset();
+                modalLoading.attr('class', 'gridify-modal-loader');
                 
+                modalLoading.css({
+                    width: $('body').innerWidth(),
+                    top: offset.top + 'px',
+                    left: offset.left + 'px'
+                });
+                $('body').append(modalLoading);
+
+                return $(modalLoading);
             },
             autoload = function() {
-                
-                $(window).on('scroll', function () {
+                $(window).on('scroll', function(event) {
 
                     var scrollPos = $(document).height() - $(window).height() - $(window).scrollTop();
                     if (scrollPos < scrollDistance && !processLoad && pageCurrent != options.pageCount) {
                         processLoad = true;   
-
+                        
+                        $('body').addClass('loading');
+                        var loader = modalLoader(options.loader);
+                        
                         var data = new Object;
                         data[options.pageParam] = ++pageCurrent;
- 
+
                         $.ajax({
                             url:        options.url,
                             data:       data,
                             type:       'get',
                             success:    function(data) {
-                                
                                 $('#' + options.id).append(data);
-                                render();                              
+
+                                imagesLoading(render);                             
                                 processLoad = false;
-                                
+                                loader.remove();
+                                $('body').removeClass('loading');
+
                                 options.events.afterLoad.call($this);
                             }
                         });
                     }
-                    
                 });
-                
             };
 
-        render();
+        imagesLoading(render);
         autoload();
 
         if (options.resizable) {
             var resize = $(window).bind("resize", render);
             $this.on('remove', resize.unbind);
         }
-        
     };
     
 })(jQuery);
