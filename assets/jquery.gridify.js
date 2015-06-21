@@ -19,6 +19,7 @@
             scrollDistance  = 250,
             loading         = false,
             pageCurrent     = 1,
+            progress        = null,
 
             indexOfSmallest = function(a) {
                 var lowest = 0;
@@ -69,6 +70,8 @@
                 }
 
                 $this.css('height', Math.max.apply(null, columns) + itemMargin);
+                
+                progress.remove();
             },
             imagesLoading = function(cb) {
                 var images = $this.find('img');
@@ -123,7 +126,7 @@
                         loading = true;   
                         
                         $('body').addClass('loading');
-                        var progress = progressBar(options.loader);
+                        progress = progressBar(options.loader);
                         
                         var data = new Object;
                         data[options.pageParam] = ++pageCurrent;
@@ -135,10 +138,9 @@
                             success:    function(data) {
                                 $('#' + options.id).append(data);
                                 imagesLoading(render);                             
-                                options.events.afterLoad.call($this);
                                 $('body').removeClass('loading');
-                                progress.remove();
                                 loading = false;
+                                options.events.afterLoad.call($this);
                             }
                         });
                     }
