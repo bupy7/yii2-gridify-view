@@ -5,6 +5,7 @@
  * @author Vasilij Belosludcev https://github.com/bupy7/yii2-gridify-view
  * @version 1.0.0
  */
+
 'use strict';
 
 (function($) {   
@@ -49,7 +50,7 @@
                     columns.push(0);
                 }
 
-                for(var i = 0, length = items.length; i < length; i++) {
+                for(var i = 0, length = items.length; i < length; i++) {                   
                     var $item   = $(items[i]),
                         idx     = indexOfSmallest(columns);
 
@@ -63,6 +64,7 @@
                             'display':              'block'
                         })
                         .addClass('loaded');
+                    
                     columns[idx] += $item.innerHeight() + itemMargin;
                 }
 
