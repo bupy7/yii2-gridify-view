@@ -33,7 +33,6 @@
                 $this.css('position', 'relative');
 
                 var items       = $this.find(options.srcNode),
-                    transition  = options.transition || 'visibility 1s ease-out 0s',
                     width       = $this.innerWidth(),
                     itemMargin  = parseInt(options.margin || 0),
                     itemWidth   = parseInt(options.maxWidth || options.width || 220),
@@ -55,18 +54,16 @@
                     var $item   = $(items[i]),
                         idx     = indexOfSmallest(columns);
 
-                    $item.css({
-                        'width':                itemWidth,
-                        'position':             'absolute',
-                        'margin':               itemMargin / 2,
-                        'top':                  columns[idx] + itemMargin / 2,
-                        'left':                 (itemWidth + itemMargin) * idx + left,
-                        'visibility':           'visible',
-                        'transition':           transition,
-                        '-webkit-transition':   transition,
-                        '-moz-transition':      transition,
-                        '-o-transition':        transition
-                    });
+                    $item
+                        .css({
+                            'width':                itemWidth,
+                            'position':             'absolute',
+                            'margin':               itemMargin / 2,
+                            'top':                  columns[idx] + itemMargin / 2,
+                            'left':                 (itemWidth + itemMargin) * idx + left,
+                            'display':              'block'
+                        })
+                        .addClass('loaded');
                     columns[idx] += $item.innerHeight() + itemMargin;
                 }
 
@@ -92,7 +89,7 @@
                     image.src = images[i].src;
                 }
             },
-            modalLoader = function(message) {
+            loader = function(message) {
                 var styles = [
                         'position: fixed;',
                         'display: block;',
@@ -106,28 +103,28 @@
                         '<div style="' + styles.join(' ') + '">' +
                             '<div style="display: inline-block; padding: 10px;">' + message + '</div>' +
                         '</div>',
-                    modalLoading = $(template),
+                    loader = $(template),
                     offset = $('body').offset();
-                modalLoading.attr('class', 'gridify-modal-loader');
+                loader.attr('class', 'gridify-modal-loader');
                 
-                modalLoading.css({
+                loader.css({
                     width: $('body').innerWidth(),
                     top: offset.top + 'px',
                     left: offset.left + 'px'
                 });
-                $('body').append(modalLoading);
+                $('body').append(loader);
 
-                return $(modalLoading);
+                return $(loader);
             },
             autoload = function() {
-                $(window).on('scroll', function(event) {
+                $(window).on('scroll', function() {
 
                     var scrollPos = $(document).height() - $(window).height() - $(window).scrollTop();
                     if (scrollPos < scrollDistance && !processLoad && pageCurrent != options.pageCount) {
                         processLoad = true;   
                         
                         $('body').addClass('loading');
-                        loader = modalLoader(options.loader);
+                        loader = loader(options.loader);
                         
                         var data = new Object;
                         data[options.pageParam] = ++pageCurrent;
