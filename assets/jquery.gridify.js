@@ -16,9 +16,8 @@
                 }
             }, o),
             scrollDistance  = 250,
-            processLoad     = false,
+            loading         = false,
             pageCurrent     = 1,
-            loader          = null,
 
             indexOfSmallest = function(a) {
                 var lowest = 0;
@@ -68,8 +67,6 @@
                 }
 
                 $this.css('height', Math.max.apply(null, columns) + itemMargin);
-                
-                loader.remove();
             },
             imagesLoading = function(cb) {
                 var images = $this.find('img');
@@ -89,7 +86,7 @@
                     image.src = images[i].src;
                 }
             },
-            loader = function(message) {
+            progressBar = function(message) {
                 var styles = [
                         'position: fixed;',
                         'display: block;',
@@ -103,28 +100,28 @@
                         '<div style="' + styles.join(' ') + '">' +
                             '<div style="display: inline-block; padding: 10px;">' + message + '</div>' +
                         '</div>',
-                    loader = $(template),
+                    progressBar = $(template),
                     offset = $('body').offset();
-                loader.attr('class', 'gridify-modal-loader');
+                progressBar.attr('class', 'gridify-modal-loader');
                 
-                loader.css({
+                progressBar.css({
                     width: $('body').innerWidth(),
                     top: offset.top + 'px',
                     left: offset.left + 'px'
                 });
-                $('body').append(loader);
+                $('body').append(progressBar);
 
-                return $(loader);
+                return $(progressBar);
             },
             autoload = function() {
                 $(window).on('scroll', function() {
 
                     var scrollPos = $(document).height() - $(window).height() - $(window).scrollTop();
-                    if (scrollPos < scrollDistance && !processLoad && pageCurrent != options.pageCount) {
-                        processLoad = true;   
+                    if (scrollPos < scrollDistance && !loading && pageCurrent != options.pageCount) {
+                        loading = true;   
                         
                         $('body').addClass('loading');
-                        loader = loader(options.loader);
+                        var progress = progressBar(options.loader);
                         
                         var data = new Object;
                         data[options.pageParam] = ++pageCurrent;
@@ -135,12 +132,11 @@
                             type:       'get',
                             success:    function(data) {
                                 $('#' + options.id).append(data);
-
                                 imagesLoading(render);                             
-                                processLoad = false;
-                                $('body').removeClass('loading');
-
                                 options.events.afterLoad.call($this);
+                                $('body').removeClass('loading');
+                                progress.remove();
+                                loading = false;
                             }
                         });
                     }
