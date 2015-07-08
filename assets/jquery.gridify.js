@@ -72,6 +72,9 @@
                 $this.css('height', Math.max.apply(null, columns) + itemMargin);
                 
                 progress.remove();
+                $('body').removeClass('loading');
+                loading = false;
+                options.events.afterLoad.call($this);
             },
             imagesLoading = function(cb) {
                 var images = $this.find('img');
@@ -138,9 +141,6 @@
                             success:    function(data) {
                                 $('#' + options.id).append(data);
                                 imagesLoading(render);                             
-                                $('body').removeClass('loading');
-                                loading = false;
-                                options.events.afterLoad.call($this);
                             }
                         });
                     }
