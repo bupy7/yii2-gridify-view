@@ -19,7 +19,7 @@
             scrollDistance  = 250,
             loading         = false,
             pageCurrent     = 1,
-            progress        = null,
+            $progress       = null,
 
             indexOfSmallest = function(a) {
                 var lowest = 0;
@@ -57,12 +57,12 @@
 
                     $item
                         .css({
-                            'width':                itemWidth,
-                            'position':             'absolute',
-                            'margin':               itemMargin / 2,
-                            'top':                  columns[idx] + itemMargin / 2,
-                            'left':                 (itemWidth + itemMargin) * idx + left,
-                            'display':              'block'
+                            width:      itemWidth,
+                            position:   'absolute',
+                            margin:     itemMargin / 2,
+                            top:        columns[idx] + itemMargin / 2,
+                            left:       (itemWidth + itemMargin) * idx + left,
+                            display:    'block'
                         })
                         .addClass('loaded');
                     
@@ -71,8 +71,10 @@
 
                 $this.css('height', Math.max.apply(null, columns) + itemMargin);
                 
-                progress.remove();
-                $('body').removeClass('loading');
+                if ($progress !== null) {
+                    $progress.remove();
+                }
+                $('body').removeClass('gridify-loading');
                 loading = false;
                 options.events.afterLoad.call($this);
             },
@@ -94,42 +96,37 @@
                     image.src = images[i].src;
                 }
             },
-            progressBar = function(message) {
-                var styles = [
-                        'position: fixed;',
-                        'display: block;',
-                        'z-index: 999999;',
-                        'text-align: center;',
-                        'background: rgba(0, 0, 0, 0.5);',
-                        'font-size: 20px;',
-                        'color: #fff'
-                    ],
-                    template = 
-                        '<div style="' + styles.join(' ') + '">' +
-                            '<div style="display: inline-block; padding: 10px;">' + message + '</div>' +
-                        '</div>',
-                    progressBar = $(template),
-                    offset = $('body').offset();
-                progressBar.attr('class', 'gridify-modal-loader');
-                
-                progressBar.css({
-                    width: $('body').innerWidth(),
-                    top: offset.top + 'px',
-                    left: offset.left + 'px'
-                });
-                $('body').append(progressBar);
-
-                return $(progressBar);
-            },
             autoload = function() {
                 $(window).on('scroll', function() {
 
                     var scrollPos = $(document).height() - $(window).height() - $(window).scrollTop();
                     if (scrollPos < scrollDistance && !loading && pageCurrent != options.pageCount) {
-                        loading = true;   
+                        loading = true;                          
                         
-                        $('body').addClass('loading');
-                        progress = progressBar(options.loader);
+                        $('body').addClass('gridify-loading');
+                        var styles = [
+                                'position: fixed;',
+                                'display: block;',
+                                'z-index: 999999;',
+                                'text-align: center;',
+                                'background: rgba(0, 0, 0, 0.5);',
+                                'font-size: 20px;',
+                                'color: #fff'
+                            ],
+                            template = 
+                                '<div style="' + styles.join(' ') + '">' +
+                                    '<div style="display: inline-block; padding: 10px;">' + options.loader + '</div>' +
+                                '</div>',
+                            offset = $('body').offset();
+                        $progress = 
+                            $(template)
+                                .attr('class', 'gridify-modal-loader')
+                                .css({
+                                    width: $('body').innerWidth(),
+                                    top: offset.top + 'px',
+                                    left: offset.left + 'px'
+                                });
+                        $('body').append($progress);
                         
                         var data = new Object;
                         data[options.pageParam] = ++pageCurrent;
@@ -146,7 +143,7 @@
                     }
                 });
             };
-
+              
         imagesLoading(render);
         autoload();
 
