@@ -8,7 +8,7 @@ use yii\web\AssetBundle;
  * Register jQuery plugin Gridfy from https://github.com/hongkhanh/gridify with modification.
  * 
  * @author Belosludcev Vasilij http://mihaly4.ru
- * @version 1.0.0
+ * @since 1.0.0
  */
 class GridifyViewAsset extends AssetBundle
 {
