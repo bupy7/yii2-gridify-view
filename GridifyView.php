@@ -1,4 +1,5 @@
 <?php
+
 namespace bupy7\gridifyview;
 
 use yii\helpers\Url;
@@ -15,7 +16,7 @@ use yii\web\JsExpression;
  * content automatically via Ajax when you reach the end of the page. Content is displayed in table form.
  * 
  * @author Belosludcev Vasilij http://mihaly4.ru
- * @version 1.0.0
+ * @since 1.0.0
  */
 class GridifyView extends ListView
 {
