@@ -3,7 +3,7 @@
  * 
  * @author Nguyen Hong Khanh https://github.com/hongkhanh/gridify
  * @author Vasilij Belosludcev https://github.com/bupy7/yii2-gridify-view
- * @version 1.0.0
+ * @since 1.0.0
  */
 
 'use strict';
