@@ -4,6 +4,7 @@
     "keywords": ["yii2", "extension", "widget", "ListView", "grid", "image", "view", "box"],
     "homepage": "https://github.com/bupy7/yii2-gridify-view",
     "type": "yii2-extension",
+    "version": "1.0.0",
     "license": "BSD 3-Clause",
     "authors": [
         {
