@@ -4,18 +4,17 @@
     "keywords": ["yii2", "extension", "widget", "ListView", "grid", "image", "view", "box"],
     "homepage": "https://github.com/bupy7/yii2-gridify-view",
     "type": "yii2-extension",
-    "version": "1.0.0",
-    "license": "BSD 3-Clause",
+    "version": "1.0.1",
+    "license": "BSD-3-Clause",
     "authors": [
         {
-            "name": "Vasilij Belosludcev",
-            "email": "bupy765@gmail.com",
+            "name": "Vasily Belosloodcev",
+            "email": "vasily.belosloodcev@gmail.com",
             "homepage": "http://mihaly4.ru"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-        "yiisoft/yii2-bootstrap": "@dev"
+        "yiisoft/yii2-bootstrap": "^2.0"
     },
     "autoload": {
         "psr-4": {
