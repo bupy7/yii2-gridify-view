@@ -4,7 +4,7 @@ This is widget extended of ListView with plugin of https://github.com/hongkhanh/
 
 ![Screenshot](screenshot.png)
 
-##Installation
+## Installation
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
 Either run
